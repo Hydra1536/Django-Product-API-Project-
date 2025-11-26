@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "django_filters",
+    "rest_framework",
     "products",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -127,3 +129,26 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# settings.py
+
+REST_FRAMEWORK = {
+    # Pagination class → allows ?limit=&offset=
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+
+    # Default number of items per page (optional)
+    'PAGE_SIZE': 10,
+    
+    # Enable throttling globally
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',  # for non-authenticated users
+        'rest_framework.throttling.UserRateThrottle',  # for authenticated users
+    ],
+
+    # Allowed request rates
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '30/min',  # 30 requests per minute for anonymous users
+        'user': '30/min',  # 30 requests per minute for logged-in users
+    },
+}
+
