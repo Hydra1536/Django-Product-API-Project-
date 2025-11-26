@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -78,16 +79,15 @@ WSGI_APPLICATION = "product_api.wsgi.application"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
-
 
 
 # Password validation
@@ -135,21 +135,17 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
     # Pagination class → allows ?limit=&offset=
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     # Default number of items per page (optional)
-    'PAGE_SIZE': 10,
-    
+    "PAGE_SIZE": 10,
     # Enable throttling globally
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',  # for non-authenticated users
-        'rest_framework.throttling.UserRateThrottle',  # for authenticated users
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",  # for non-authenticated users
+        "rest_framework.throttling.UserRateThrottle",  # for authenticated users
     ],
-
     # Allowed request rates
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '30/min',  # 30 requests per minute for anonymous users
-        'user': '30/min',  # 30 requests per minute for logged-in users
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "30/min",  # 30 requests per minute for anonymous users
+        "user": "30/min",  # 30 requests per minute for logged-in users
     },
 }
-
