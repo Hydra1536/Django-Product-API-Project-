@@ -305,19 +305,6 @@ path('redoc/', schema_view.with_ui('redoc', cache_timeout=0)),
 </div>
 
 
-
-<div class="section">
-<h2>🧪 Run the Server</h2>
-
-<pre>
-python manage.py runserver
-</pre>
-
-Visit API:
-
-<pre>http://127.0.0.1:8000/api/products/</pre>
-</div>
-
 <div class="section"> <h2>🧪 Run the Server & Test API</h2> <h3>1️⃣ Run the Django development server</h3> <pre> python manage.py runserver </pre>
 
 Visit API:
