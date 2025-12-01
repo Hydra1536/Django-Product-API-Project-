@@ -318,7 +318,64 @@ Visit API:
 <pre>http://127.0.0.1:8000/api/products/</pre>
 </div>
 
+<div class="section"> <h2>🧪 Run the Server & Test API</h2> <h3>1️⃣ Run the Django development server</h3> <pre> python manage.py runserver </pre>
 
+Visit API:
+
+<pre>http://127.0.0.1:8000/api/products/</pre>
+<h3>2️⃣ Test API Endpoints using curl or Postman</h3>
+
+Create a product (POST):
+
+<pre> POST /api/products/ Content-Type: application/json { "name": "iPhone 15", "price": 999.99, "category": "Electronics" } </pre>
+
+List products (GET):
+
+<pre> GET /api/products/ GET /api/products/?search=phone GET /api/products/?category=Electronics GET /api/products/?price__gte=100&price__lte=1000 </pre>
+
+Retrieve product by ID (GET):
+
+<pre> GET /api/products/1/ </pre>
+
+Update product (PUT / PATCH):
+
+<pre> PUT /api/products/1/ Content-Type: application/json { "name": "iPhone 15 Pro", "price": 1099.99, "category": "Electronics" } </pre>
+
+Delete product (DELETE):
+
+<pre> DELETE /api/products/1/ </pre>
+<h3>3️⃣ Test Pagination</h3> <pre> GET /api/products/?limit=5&offset=0 GET /api/products/?limit=3&offset=10 </pre>
+<h3>4️⃣ Test Filtering & Searching</h3> <pre> # Filter by name containing 'phone' GET /api/products/?name__icontains=phone
+Filter by category
+
+GET /api/products/?category=Electronics
+
+Filter by price range
+
+GET /api/products/?price__gte=100&price__lte=500
+
+Search by name or category
+
+GET /api/products/?search=phone
+</pre>
+
+<h3>5️⃣ Test Rate Limiting</h3> <pre> # Make more than 30 requests per minute from the same user/IP # Response: 429 Too Many Requests </pre>
+<h3>6️⃣ Run Automated Tests (Optional)</h3>
+
+If you write Django test cases (in tests.py in your app), run:
+
+<pre> python manage.py test </pre>
+
+This will run all test cases for your products app and show results for API endpoints.
+
+<h3>7️⃣ Swagger / Redoc Documentation</h3> <pre> # Swagger UI http://127.0.0.1:8000/docs/
+Redoc
+
+http://127.0.0.1:8000/redoc/
+
+</pre>
+
+<p> With these instructions, you can fully test the API endpoints manually using Postman/curl or automatically using Django tests. </p> </div>
 
 <div class="section">
 <h2>📌 Conclusion</h2>
