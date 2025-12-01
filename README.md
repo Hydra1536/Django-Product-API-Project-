@@ -352,9 +352,7 @@ GET /api/products/?search=phone
 If you write Django test cases (in tests.py in your app), run:
 
 <pre> python manage.py test 
-<br>
 coverage run --source='products' manage.py test
-<br>
 coverage report -m
 </pre>
 
