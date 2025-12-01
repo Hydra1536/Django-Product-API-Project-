@@ -17,7 +17,7 @@ class ProductSerializer(serializers.ModelSerializer):
     # Basic validation
     def validate_name(self, value):
         if not value:
-            raise serializers.ValidationError()
+            raise serializers.ValidationError("Name is required.")
         # Check if name contains at least one character
         for i in range(len(value)):
             if not ((65 <= ord(value[i]) <= 90) or (97 <= ord(value[i]) <= 122)):
@@ -40,7 +40,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def validate_category(self, value):
         if not value:
-            raise serializers.ValidationError()
+            raise serializers.ValidationError("Category is required.")
         # Check if category contains at least one character
         for i in range(len(value)):
             if not ((65 <= ord(value[i]) <= 90) or (97 <= ord(value[i]) <= 122)):

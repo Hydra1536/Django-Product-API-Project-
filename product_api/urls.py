@@ -41,7 +41,7 @@ router.register("products", ProductViewSet, basename="products")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(router.urls)),
+    path("api/", include(("products.urls", "products"), namespace="products")),
     # Swagger UI → interactive API documentation
     path("docs/", schema_view.with_ui("swagger", cache_timeout=0), name="swagger-ui"),
     # Redoc UI (optional)
