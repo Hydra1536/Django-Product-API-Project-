@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from .models import Product
 from .serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -28,6 +29,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     # Optional ordering support
     ordering_fields = ["name", "price", "created_at"]
     ordering = ["id"]
+    
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=["delete"])
     def bulk_delete(self, request):
