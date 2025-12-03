@@ -1,0 +1,21 @@
+# Core Framework
+Django>=5.0,<6.0
+
+# Django REST Framework
+djangorestframework>=3.16,<3.18
+
+# Filtering support
+django-filter>=25.2,<26.0
+
+# JWT Authentication
+djangorestframework-simplejwt>=5.3,<6.0
+
+# API Documentation (Swagger)
+drf-yasg>=1.21,<2.0
+
+# Environment Variable Management
+python-dotenv>=1.0,<2.0
+python-decouple>=3.8,<4.0
+
+# PostgreSQL Database Driver
+psycopg2-binary>=2.9,<3.0
