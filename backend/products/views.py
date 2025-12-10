@@ -27,7 +27,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ["name", "category"]
 
     # Optional ordering support
-    ordering_fields = ["name", "price", "created_at"]
+    ordering_fields = ["id", "name", "price", "created_at"]
     ordering = ["id"]
     
     permission_classes = [IsAuthenticated]

@@ -21,6 +21,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
+from django.views.generic import TemplateView
 
 from products.views import ProductViewSet
 from rest_framework_simplejwt.views import (
@@ -43,6 +44,7 @@ router = DefaultRouter()
 router.register("products", ProductViewSet, basename="products")
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="index.html"), name="home"),  # serves frontend/build/index.html
     path("admin/", admin.site.urls),
     path("api/", include(("products.urls", "products"), namespace="products")),
     # Swagger UI → interactive API documentation

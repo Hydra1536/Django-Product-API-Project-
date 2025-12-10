@@ -12,13 +12,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
-from decouple import config
 from datetime import timedelta
-
+import os
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+FRONTEND_BUILD_DIR = os.path.join(BASE_DIR.parent, "frontend", "build")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -34,9 +34,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework",
+    "corsheaders",
     "drf_yasg",
     "django_filters",
-    "rest_framework",
     "products",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -45,8 +46,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # add this
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -125,7 +129,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+# static files
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"            # where collectstatic will collect files
+# If your React build will be inside backend/frontend/build, add its static folder to STATICFILES_DIRS
+STATICFILES_DIRS = [
+    os.path.join(FRONTEND_BUILD_DIR, "static")
+]
+
+# templates — let Django serve build/index.html
+TEMPLATES[0]["DIRS"] = [FRONTEND_BUILD_DIR]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
