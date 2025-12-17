@@ -4,17 +4,23 @@ from rest_framework.test import APITestCase
 
 from products.models import Product
 from products.serializers import ProductSerializer
+from accounts.models import User
 
 
 class ProductViewSetTest(APITestCase):
 
     def setUp(self):
+        self.admin_user = User.objects.create_user(
+            username="admin", email="admin@test.com", password="pass", role="admin"
+        )
+        self.client.force_authenticate(user=self.admin_user)
+
         self.p1 = Product.objects.create(
             name="Phone", price=1000, category="Electronics"
         )
         self.p2 = Product.objects.create(name="Table", price=200, category="Furniture")
 
-        self.list_url = reverse("products:product-list")
+        self.list_url = reverse("products:products-list")
 
     def _results(self, response):
         """Helper to extract paginated results."""
@@ -37,13 +43,13 @@ class ProductViewSetTest(APITestCase):
         self.assertEqual(Product.objects.count(), 3)
 
     def test_retrieve_product(self):
-        url = reverse("products:product-detail", args=[self.p1.id])
+        url = reverse("products:products-detail", args=[self.p1.id])
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["name"], "Phone")
 
     def test_update_product(self):
-        url = reverse("products:product-detail", args=[self.p1.id])
+        url = reverse("products:products-detail", args=[self.p1.id])
         data = {"name": "PhoneX", "price": 1100, "category": "Electronics"}
         response = self.client.put(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -51,7 +57,7 @@ class ProductViewSetTest(APITestCase):
         self.assertEqual(self.p1.name, "PhoneX")
 
     def test_delete_product(self):
-        url = reverse("products:product-detail", args=[self.p1.id])
+        url = reverse("products:products-detail", args=[self.p1.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
@@ -102,7 +108,7 @@ class ProductViewSetTest(APITestCase):
     # ----- Bulk Delete -----
 
     def test_bulk_delete(self):
-        url = reverse("products:product-bulk-delete")
+        url = reverse("products:products-bulk-delete")
         response = self.client.delete(
             url, {"ids": [self.p1.id, self.p2.id]}, format="json"
         )
@@ -111,7 +117,7 @@ class ProductViewSetTest(APITestCase):
 
     def test_bulk_delete_no_items(self):
         """Covers the else path in bulk_delete (no items found)"""
-        url = reverse("products:product-bulk-delete")
+        url = reverse("products:products-bulk-delete")
         response = self.client.delete(url, {"ids": [999, 1000]}, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, "No items found to delete.")

@@ -24,8 +24,8 @@ from rest_framework.routers import DefaultRouter
 from django.views.generic import TemplateView
 
 from products.views import ProductViewSet
+from accounts.views import EmailTokenObtainPairView
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
 )
 schema_view = get_schema_view(
@@ -52,7 +52,10 @@ urlpatterns = [
     # Redoc UI (optional)
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="redoc-ui"),
     # JWT token endpoints
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+path('api/token/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    
+    path("api/accounts/", include("accounts.urls")),
+
 ]
  

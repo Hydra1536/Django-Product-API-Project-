@@ -1,0 +1,51 @@
+# API Endpoints for Product API Project
+
+## Authentication Endpoints
+- POST /api/token/ - Obtain JWT token pair (username/email and password)
+- POST /api/token/refresh/ - Refresh JWT access token
+
+## User Management Endpoints (Admin Only, except self-management)
+- GET /api/accounts/users/ - List all users (admin)
+- POST /api/accounts/users/ - Create a new user (admin)
+- GET /api/accounts/users/{id}/ - Retrieve a specific user (admin)
+- PUT /api/accounts/users/{id}/ - Update a specific user (admin)
+- PATCH /api/accounts/users/{id}/ - Partially update a specific user (admin)
+- DELETE /api/accounts/users/{id}/ - Delete a specific user (admin, cannot delete other admins)
+- DELETE /api/accounts/users/bulk_delete/ - Bulk delete users (admin, provide ids in request data)
+- GET /api/accounts/users/search/?q={query} - Search users by username, email, or role (admin)
+- GET /api/accounts/users/me/ - Get current user's profile (authenticated users)
+- PATCH /api/accounts/users/me/ - Update current user's profile (name, email) (authenticated users)
+- POST /api/accounts/users/change_my_password/ - Change current user's password (authenticated users)
+
+## Product Management Endpoints
+- GET /api/products/ - List all products (authenticated users)
+  - Filtering: ?name__icontains={value}, ?category={value}, ?price__gte={value}, ?price__lte={value}
+  - Searching: ?search={value} (searches name, category)
+  - Ordering: ?ordering={field} (id, name, price, created_at)
+- POST /api/products/ - Create a new product (admin or super_staff)
+- GET /api/products/{id}/ - Retrieve a specific product (authenticated users)
+- PUT /api/products/{id}/ - Update a specific product (admin or super_staff)
+- PATCH /api/products/{id}/ - Partially update a specific product (admin or super_staff)
+- DELETE /api/products/{id}/ - Delete a specific product (admin or super_staff)
+- DELETE /api/products/bulk_delete/ - Bulk delete products (admin or super_staff, provide ids in request data)
+
+## Documentation Endpoints
+- GET /docs/ - Swagger UI for API documentation
+- GET /redoc/ - Redoc UI for API documentation
+
+## Admin Panel
+- /admin/ - Django Admin Panel (staff and admin roles can access, with role-based permissions)
+
+## Permissions Summary
+- Admin: Full CRUD on users and products, can assign super_staff to staff users
+- Staff: Can access admin panel, view users and products, but cannot CRUD users or products unless super_staff
+- Super_Staff: Can CRUD products, but only view users
+- Customer: Can only list/read products after login
+
+## Notes
+- All endpoints except documentation require authentication via JWT token in Authorization header: Bearer {token}
+- Passwords are encrypted using Django's default hashing
+- Roles: admin, staff, customer
+- Search in user dashboard is via API /api/accounts/users/search/
+- Bulk delete for users and products available
+- Admin panel has search by username, email, role

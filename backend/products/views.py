@@ -6,35 +6,40 @@ from rest_framework.response import Response
 
 from .models import Product
 from .serializers import ProductSerializer
-from rest_framework.permissions import IsAuthenticated
+from product_api.permissions import ProductPermission
 
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all().order_by("-created_at")
     serializer_class = ProductSerializer
+    permission_classes = [ProductPermission]
 
     # Filtering + Searching
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
-    # Filtering options
     filterset_fields = {
-        "name": ["icontains"],  # /api/products/?name__icontains=phone
-        "category": ["exact"],  # /api/products/?category=Electronics
-        "price": ["gte", "lte"],  # /api/products/?price__gte=500
+        "name": ["icontains"],
+        "category": ["exact"],
+        "price": ["gte", "lte"],
     }
 
-    # Search options
     search_fields = ["name", "category"]
-
-    # Optional ordering support
     ordering_fields = ["id", "name", "price", "created_at"]
     ordering = ["id"]
-    
-    permission_classes = [IsAuthenticated]
 
+    # # ❌ REMOVE SINGLE DELETE
+    # def destroy(self, request, *args, **kwargs):
+    #     return Response(
+    #         {"detail": "Single delete is disabled. Use bulk_delete."},
+    #         status=405,
+    #     )
+
+    # ✅ BULK DELETE ONLY
     @action(detail=False, methods=["delete"])
     def bulk_delete(self, request):
-        items_to_delete = self.get_queryset().filter(pk__in=request.data.get("ids", []))
-        if items_to_delete.exists():
-            return Response({"deleted_count": items_to_delete.delete()[0]})
-        return Response("No items found to delete.")
+        ids = request.data.get("ids", [])
+        if not ids:
+            return Response({"detail": "No IDs provided"}, status=400)
+
+        deleted, _ = Product.objects.filter(id__in=ids).delete()
+        return Response({"deleted_count": deleted})
