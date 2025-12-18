@@ -2,9 +2,9 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from accounts.models import User
 from products.models import Product
 from products.serializers import ProductSerializer
-from accounts.models import User
 
 
 class ProductViewSetTest(APITestCase):

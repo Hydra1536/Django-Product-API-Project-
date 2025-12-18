@@ -10,11 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
+from datetime import timedelta
 from pathlib import Path
 
-from datetime import timedelta
-import os
 from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -52,7 +53,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",  # add this
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -127,20 +128,22 @@ USE_I18N = True
 
 USE_TZ = True
 
- 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 # static files
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"            # where collectstatic will collect files
+STATIC_ROOT = BASE_DIR / "staticfiles"  # where collectstatic will collect files
 # If your React build will be inside backend/frontend/build, add its static folder to STATICFILES_DIRS
 STATICFILES_DIRS = [
     os.path.join(FRONTEND_BUILD_DIR),  # Adjust according to your build output
 ]
 
 # templates — let Django serve build/index.html
-TEMPLATES[0]["DIRS"] = [os.path.join(FRONTEND_BUILD_DIR)] # <-- FIX: Point to the 'dist' folder.
+TEMPLATES[0]["DIRS"] = [
+    os.path.join(FRONTEND_BUILD_DIR)
+]  # <-- FIX: Point to the 'dist' folder.
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -164,24 +167,24 @@ REST_FRAMEWORK = {
         "user": "30/min",  # 30 requests per minute for logged-in users
     },
     # NEW: Auth System
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Access token validity
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Refresh token validity
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),  # Access token validity
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),  # Refresh token validity
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header',
-            'description': "Enter token as: Bearer <access_token>"
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter token as: Bearer <access_token>",
         }
     }
 }

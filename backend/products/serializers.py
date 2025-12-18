@@ -1,7 +1,9 @@
 import re
 
 from rest_framework import serializers
+
 from .models import Product
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,7 +19,9 @@ class ProductSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Name is required.")
 
         if not any(c.isalpha() for c in value):
-            raise serializers.ValidationError("Name must contain at least one character.")
+            raise serializers.ValidationError(
+                "Name must contain at least one character."
+            )
 
         # Unique check except current instance
         qs = Product.objects.filter(name=value)

@@ -17,17 +17,16 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
-from django.views.generic import TemplateView
+from rest_framework_simplejwt.views import TokenRefreshView
 
-from products.views import ProductViewSet
 from accounts.views import EmailTokenObtainPairView
-from rest_framework_simplejwt.views import (
-    TokenRefreshView,
-)
+from products.views import ProductViewSet
+
 schema_view = get_schema_view(
     openapi.Info(
         title="Product API",
@@ -44,7 +43,9 @@ router = DefaultRouter()
 router.register("products", ProductViewSet, basename="products")
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html"), name="home"),  # serves frontend/build/index.html
+    path(
+        "", TemplateView.as_view(template_name="index.html"), name="home"
+    ),  # serves frontend/build/index.html
     path("admin/", admin.site.urls),
     path("api/", include(("products.urls", "products"), namespace="products")),
     # Swagger UI → interactive API documentation
@@ -52,10 +53,7 @@ urlpatterns = [
     # Redoc UI (optional)
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="redoc-ui"),
     # JWT token endpoints
-path('api/token/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+    path("api/token/", EmailTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/accounts/", include("accounts.urls")),
-
 ]
- 

@@ -1,31 +1,116 @@
-import { Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./auth/AuthProvider";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./auth/Login";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import Layout from "./components/Layout";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import ProductList from "./pages/Products/ProductList";
-import UserList from "./pages/Users/UserList";
+import { AuthProvider } from "./context/AuthContext";
+
+import AdminLayout from "./components/layout/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import Users from "./pages/admin/Users";
+import UserForm from "./pages/admin/UserForm";
+import Products from "./pages/admin/Products";
+import ProductForm from "./pages/admin/ProductForm";
+import ChangePassword from "./pages/ChangePassword";
+import CustomerBlank from "./pages/CustomerBlank";
 
 export default function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
+      <BrowserRouter>
+        <Routes>
+          {/* Auth */}
+          <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute allowRoles={["admin", "staff", "super_staff"]}>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="products" element={<ProductList />} />
-          <Route path="users" element={<UserList />} />
-        </Route>
-      </Routes>
+          {/* Customer */}
+          <Route path="/" element={<CustomerBlank />} />
+
+          {/* Admin */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute roles={["admin", "staff", "super_staff"]}>
+                <AdminLayout>
+                  <Dashboard />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute roles={["admin", "staff", "super_staff"]}>
+                <AdminLayout>
+                  <Users />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/users/add"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminLayout>
+                  <UserForm />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/products"
+            element={
+              <ProtectedRoute roles={["admin", "staff", "super_staff"]}>
+                <AdminLayout>
+                  <Products />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/admin/products/add"
+            element={
+              <ProtectedRoute roles={["admin", "super_staff"]}>
+                <AdminLayout>
+                  <ProductForm />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/change-password"
+            element={
+              <ProtectedRoute>
+                <ChangePassword />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users/:id/edit"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminLayout>
+                  <UserForm />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/products/:id/edit"
+            element={
+              <ProtectedRoute roles={["admin", "super_staff"]}>
+                <AdminLayout>
+                  <ProductForm />
+                </AdminLayout>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   );
 }

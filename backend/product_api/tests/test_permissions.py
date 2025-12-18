@@ -1,7 +1,8 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
+from django.test import TestCase
 from rest_framework.test import APIRequestFactory
+
 from product_api.permissions import ProductPermissions
 
 User = get_user_model()
@@ -11,29 +12,23 @@ class ProductPermissionsTest(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
         self.admin_user = User.objects.create_user(
-            username="admin",
-            email="admin@example.com",
-            password="pass",
-            role="admin"
+            username="admin", email="admin@example.com", password="pass", role="admin"
         )
         self.staff_user = User.objects.create_user(
-            username="staff",
-            email="staff@example.com",
-            password="pass",
-            role="staff"
+            username="staff", email="staff@example.com", password="pass", role="staff"
         )
         self.super_staff_user = User.objects.create_user(
             username="superstaff",
             email="superstaff@example.com",
             password="pass",
             role="staff",
-            is_super_stuff=True
+            is_super_stuff=True,
         )
         self.customer_user = User.objects.create_user(
             username="customer",
             email="customer@example.com",
             password="pass",
-            role="customer"
+            role="customer",
         )
 
     def test_admin_has_full_access(self):
@@ -88,7 +83,7 @@ class ProductPermissionsTest(TestCase):
             username="unknown",
             email="unknown@example.com",
             password="pass",
-            role="unknown"
+            role="unknown",
         )
         request = self.factory.get("/")
         request.user = user

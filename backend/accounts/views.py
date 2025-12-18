@@ -1,18 +1,19 @@
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from product_api.permissions import IsAdmin, IsAdminOrSuperStaffOrReadOnlyStaff
 
 from .models import User
 from .serializers import (
-    UserSerializer,
-    UpdateUserSerializer,
     AdminChangePasswordSerializer,
     EmailTokenObtainPairSerializer,
+    UpdateUserSerializer,
+    UserSerializer,
 )
-from product_api.permissions import IsAdmin, IsAdminOrSuperStaffOrReadOnlyStaff
-from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class EmailTokenObtainPairView(TokenObtainPairView):
@@ -22,7 +23,7 @@ class EmailTokenObtainPairView(TokenObtainPairView):
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all().order_by("-id")
     serializer_class = UserSerializer
-    permission_classes = [ IsAdminOrSuperStaffOrReadOnlyStaff]
+    permission_classes = [IsAdminOrSuperStaffOrReadOnlyStaff]
 
     def get_serializer_class(self):
         if self.action in ["update", "partial_update"]:
@@ -37,7 +38,7 @@ class UserViewSet(ModelViewSet):
     @action(detail=False, methods=["delete"], permission_classes=[IsAdmin])
     def bulk_delete(self, request):
         ids = request.data.get("ids", [])
-        deleted, _ = User.objects.filter(id__in=ids).exclude(role="admin").delete()
+        deleted, _ = User.objects.filter(id__in=ids).delete()
         return Response({"deleted": deleted})
 
     # @action(detail=True, methods=["post"], permission_classes=[IsAdmin])
@@ -53,9 +54,7 @@ class UserViewSet(ModelViewSet):
     def search(self, request):
         q = request.query_params.get("q", "")
         users = User.objects.filter(
-            Q(username__icontains=q) |
-            Q(email__icontains=q) |
-            Q(role__icontains=q)
+            Q(username__icontains=q) | Q(email__icontains=q) | Q(role__icontains=q)
         )
         return Response(UserSerializer(users, many=True).data)
 
@@ -64,9 +63,7 @@ class UserViewSet(ModelViewSet):
         if request.method == "GET":
             return Response(UserSerializer(request.user).data)
 
-        serializer = UpdateUserSerializer(
-            request.user, data=request.data, partial=True
-        )
+        serializer = UpdateUserSerializer(request.user, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)

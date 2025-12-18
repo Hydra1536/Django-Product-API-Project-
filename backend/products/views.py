@@ -4,9 +4,10 @@ from rest_framework.decorators import action
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 
+from product_api.permissions import ProductPermission
+
 from .models import Product
 from .serializers import ProductSerializer
-from product_api.permissions import ProductPermission
 
 
 class ProductViewSet(viewsets.ModelViewSet):

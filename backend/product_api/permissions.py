@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
 class ProductPermission(BasePermission):
@@ -28,6 +28,7 @@ class IsAdmin(BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role == "admin"
 
+
 class IsAdminOrSuperStaffOrReadOnlyStaff(BasePermission):
     """
     Permissions for user management:
@@ -36,6 +37,7 @@ class IsAdminOrSuperStaffOrReadOnlyStaff(BasePermission):
     - staff: read-only users
     - customer: no access
     """
+
     def has_permission(self, request, view):
         user = request.user
 
@@ -46,15 +48,16 @@ class IsAdminOrSuperStaffOrReadOnlyStaff(BasePermission):
             return True
 
         if user.role in ["staff", "super_staff"]:
-            if request.method == 'GET':
+            if request.method == "GET":
                 return True
-            
-            # Since it's not GET, we check if it's HEAD or OPTIONS 
+
+            # Since it's not GET, we check if it's HEAD or OPTIONS
             # (still needed for proper API client interaction)
-            if request.method in ('HEAD', 'OPTIONS'):
-                 return True
+            if request.method in ("HEAD", "OPTIONS"):
+                return True
 
         return False
+
 
 # class IsNotCustomer(BasePermission):
 #     """

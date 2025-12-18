@@ -1,13 +1,33 @@
-# Fix Bugs in Frontend Admin Panel
+- [ ] Create authentication context (AuthContext.jsx)
+- [ ] Create custom auth hook (useAuth.js)
+- [ ] Build ProtectedRoute component
+- [ ] Create Login page with form and redirects
+- [ ] Create Home page (blank for customers)
+- [ ] Build Admin Dashboard layout (Header, main area, sidebar)
+- [ ] Create User Dashboard (table, search, filters, pagination, bulk actions)
+- [ ] Create Product Dashboard (table, search, add button, bulk actions, pagination)
+- [ ] Build User Create/Edit forms (personal info, roles, permissions, action buttons)
+- [ ] Implement Profile page for password reset
+- [ ] Create reusable components (Header, Sidebar, Table, Pagination, SearchBar, BulkActions)
+- [ ] Create API service with Axios interceptors
+- [ ] Create utility helpers
+- [ ] Update App.jsx with new routes
+- [ ] # Test login, redirects, CRUD operations, search, pagination
 
-## Tasks Completed:
-- [x] Fix authorization in ProductsPage.jsx to include superuser for CRUD operations
-- [x] Fix authorization in ProductTable.jsx to include superuser for edit actions
-- [x] Uncomment and enable bulk delete functionality in ProductsPage.jsx
-- [x] Update ProtectedRoute.jsx to allow "admin" role for accessing /users
-- [x] Update UserTable.jsx to allow admin for CRUD and staff for view
-- [x] Modify Login.jsx to redirect based on role: customers to blank page, others to /
-- [x] Improve CSS in index.css for better styling
-- [x] Fix corrupted App.jsx file
-- [x] Create CustomerPage.jsx
-- [x] Test the application to ensure all bugs are fixed
+# TODO List for React Frontend Implementation
+
+- [x] Create authentication context (AuthContext.jsx)
+- [x] Create custom auth hook (useAuth.js)
+- [x] Build ProtectedRoute component
+- [x] Create Login page with form and redirects
+- [x] Create Home page (blank for customers)
+- [x] Build Admin Dashboard layout (Header, main area, sidebar)
+- [x] Create User Dashboard (table, search, filters, pagination, bulk actions)
+- [x] Create Product Dashboard (table, search, add button, bulk actions, pagination)
+- [x] Build User Create/Edit forms (personal info, roles, permissions, action buttons)
+- [x] Implement Profile page for password reset
+- [x] Create reusable components (Header, Sidebar, Table, Pagination, SearchBar, BulkActions)
+- [x] Create API service with Axios interceptors
+- [x] Create utility helpers
+- [x] Update App.jsx with new routes
+- [ ] Test login, redirects, CRUD operations, search, pagination

@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
+from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from .models import User
 
 
@@ -10,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
-        read_only_fields = ["is_staff", "is_superuser"] #, "created_by"
+        read_only_fields = ["is_staff", "is_superuser"]  # , "created_by"
 
     def create(self, validated_data):
         password = validated_data.pop("password")
@@ -19,6 +20,7 @@ class UserSerializer(serializers.ModelSerializer):
         # user.created_by = self.context["request"].user
         user.save()
         return user
+
 
 class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,6 +34,7 @@ class AdminChangePasswordSerializer(serializers.Serializer):
 
 # ---------------- JWT ---------------- #
 
+
 class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
     username_field = "email"
 
@@ -43,5 +46,6 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
             "id": user.id,
             "email": user.email,
             "username": user.username,
-            "role": user.role        }
+            "role": user.role,
+        }
         return data

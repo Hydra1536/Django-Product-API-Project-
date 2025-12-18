@@ -1,5 +1,5 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 
 User = get_user_model()
 
@@ -10,7 +10,7 @@ class UserModelTest(TestCase):
             username="testuser",
             email="test@example.com",
             password="testpass",
-            role="customer"
+            role="customer",
         )
         self.assertEqual(user.email, "test@example.com")
         self.assertEqual(user.role, "customer")
@@ -23,27 +23,18 @@ class UserModelTest(TestCase):
 
     def test_is_admin_method(self):
         admin_user = User.objects.create_user(
-            username="admin",
-            email="admin@example.com",
-            password="pass",
-            role="admin"
+            username="admin", email="admin@example.com", password="pass", role="admin"
         )
         self.assertTrue(admin_user.is_admin())
 
         staff_user = User.objects.create_user(
-            username="staff",
-            email="staff@example.com",
-            password="pass",
-            role="staff"
+            username="staff", email="staff@example.com", password="pass", role="staff"
         )
         self.assertFalse(staff_user.is_admin())
 
     def test_is_staff_method(self):
         staff_user = User.objects.create_user(
-            username="staff",
-            email="staff@example.com",
-            password="pass",
-            role="staff"
+            username="staff", email="staff@example.com", password="pass", role="staff"
         )
         self.assertTrue(staff_user.is_staff)
 
@@ -51,7 +42,7 @@ class UserModelTest(TestCase):
             username="customer",
             email="customer@example.com",
             password="pass",
-            role="customer"
+            role="customer",
         )
         self.assertFalse(customer_user.is_staff)
 
@@ -60,33 +51,24 @@ class UserModelTest(TestCase):
             username="customer",
             email="customer@example.com",
             password="pass",
-            role="customer"
+            role="customer",
         )
         self.assertTrue(customer_user.is_customer_role())
 
         admin_user = User.objects.create_user(
-            username="admin",
-            email="admin@example.com",
-            password="pass",
-            role="admin"
+            username="admin", email="admin@example.com", password="pass", role="admin"
         )
         self.assertFalse(admin_user.is_customer_role())
 
     def test_save_sets_is_staff_for_admin_and_staff(self):
         admin_user = User.objects.create_user(
-            username="admin",
-            email="admin@example.com",
-            password="pass",
-            role="admin"
+            username="admin", email="admin@example.com", password="pass", role="admin"
         )
         admin_user.save()
         self.assertTrue(admin_user.is_staff)
 
         staff_user = User.objects.create_user(
-            username="staff",
-            email="staff@example.com",
-            password="pass",
-            role="staff"
+            username="staff", email="staff@example.com", password="pass", role="staff"
         )
         staff_user.save()
         self.assertTrue(staff_user.is_staff)
@@ -95,7 +77,7 @@ class UserModelTest(TestCase):
             username="customer",
             email="customer@example.com",
             password="pass",
-            role="customer"
+            role="customer",
         )
         customer_user.save()
         self.assertFalse(customer_user.is_staff)
@@ -106,7 +88,7 @@ class UserModelTest(TestCase):
             email="superstaff@example.com",
             password="pass",
             role="staff",
-            is_super_stuff=True
+            is_super_stuff=True,
         )
         self.assertTrue(super_staff_user.is_super_stuff)
 
@@ -115,22 +97,19 @@ class UserModelTest(TestCase):
             username="testuser",
             email="test@example.com",
             password="pass",
-            role="customer"
+            role="customer",
         )
         self.assertEqual(str(user), "test@example.com (customer)")
 
     def test_created_by_field(self):
         admin_user = User.objects.create_user(
-            username="admin",
-            email="admin@example.com",
-            password="pass",
-            role="admin"
+            username="admin", email="admin@example.com", password="pass", role="admin"
         )
         staff_user = User.objects.create_user(
             username="staff",
             email="staff@example.com",
             password="pass",
             role="staff",
-            created_by=admin_user
+            created_by=admin_user,
         )
         self.assertEqual(staff_user.created_by, admin_user)

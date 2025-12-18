@@ -1,4 +1,3 @@
-// API Configuration
-const API_BASE_URL = 'http://localhost:8000'; // Update this to your Django backend URL
+// src/config.js
 
-export default API_BASE_URL;
+export const API_BASE_URL = "http://127.0.0.1:8000/api/";

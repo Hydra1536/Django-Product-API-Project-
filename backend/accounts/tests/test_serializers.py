@@ -1,13 +1,13 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.test import TestCase
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from accounts.serializers import (
-    UserSerializer,
-    UpdateUserSerializer,
     AdminChangePasswordSerializer,
     CustomTokenObtainPairSerializer,
+    UpdateUserSerializer,
+    UserSerializer,
 )
 
 User = get_user_model()
@@ -19,23 +19,24 @@ class SerializerTest(TestCase):
             username="admin",
             email="admin@example.com",
             password="adminpass",
-            role="admin"
+            role="admin",
         )
         self.staff_user = User.objects.create_user(
             username="staff",
             email="staff@example.com",
             password="staffpass",
-            role="staff"
+            role="staff",
         )
         self.customer_user = User.objects.create_user(
             username="customer",
             email="customer@example.com",
             password="customerpass",
-            role="customer"
+            role="customer",
         )
 
     def test_user_serializer_create(self):
         from rest_framework.test import APIRequestFactory
+
         factory = APIRequestFactory()
         request = factory.post("/")
         request.user = self.admin_user  # admin creating user
@@ -43,9 +44,9 @@ class SerializerTest(TestCase):
             "username": "newuser",
             "email": "new@example.com",
             "password": "newpass",
-            "role": "customer"
+            "role": "customer",
         }
-        serializer = UserSerializer(data=data, context={'request': request})
+        serializer = UserSerializer(data=data, context={"request": request})
         self.assertTrue(serializer.is_valid())
         user = serializer.save()
         self.assertEqual(user.email, "new@example.com")
@@ -56,7 +57,7 @@ class SerializerTest(TestCase):
             "username": "newuser",
             "email": "invalid-email",
             "password": "newpass",
-            "role": "customer"
+            "role": "customer",
         }
         serializer = UserSerializer(data=data)
         self.assertFalse(serializer.is_valid())
@@ -67,7 +68,7 @@ class SerializerTest(TestCase):
             "username": "newuser",
             "email": "admin@example.com",  # duplicate
             "password": "newpass",
-            "role": "customer"
+            "role": "customer",
         }
         serializer = UserSerializer(data=data)
         self.assertFalse(serializer.is_valid())
@@ -75,11 +76,14 @@ class SerializerTest(TestCase):
 
     def test_update_user_serializer(self):
         from rest_framework.test import APIRequestFactory
+
         factory = APIRequestFactory()
         request = factory.patch("/")
         request.user = self.customer_user  # self-update
         data = {"first_name": "Updated"}
-        serializer = UpdateUserSerializer(self.customer_user, data=data, partial=True, context={'request': request})
+        serializer = UpdateUserSerializer(
+            self.customer_user, data=data, partial=True, context={"request": request}
+        )
         self.assertTrue(serializer.is_valid())
         serializer.save()
         self.customer_user.refresh_from_db()
@@ -104,7 +108,7 @@ class CustomTokenObtainPairSerializerTest(APITestCase):
             username="testuser",
             email="test@example.com",
             password="testpass",
-            role="customer"
+            role="customer",
         )
 
     def test_custom_token_obtain_serializer(self):
