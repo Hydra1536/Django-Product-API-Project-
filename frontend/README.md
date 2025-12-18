@@ -214,13 +214,6 @@ The application communicates with a REST API backend. Key endpoints include:
 - Write clean, readable, and well-documented code
 - Test all new features thoroughly
 
-## 📄 License
-
-This project is private and proprietary.
-
-## 📞 Support
-
-For support or questions, please contact the development team.
 
 ---
 
